@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     Toast.makeText(MainActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(MainActivity.this, SearchPOI.class));
                 } else {
                     Toast.makeText(MainActivity.this, "Email or password is incorrect", Toast.LENGTH_SHORT).show();
                 }
