@@ -7,7 +7,9 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Address;
 import android.location.Criteria;
+import android.location.Geocoder;
 import android.os.Bundle;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -21,13 +23,18 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.text.TextUtils;
+import android.view.View;
+import android.widget.EditText;
+
+import java.io.IOException;
+import java.util.List;
 
 public class SearchPOI extends FragmentActivity implements OnMapReadyCallback, LocationListener {
 
     private GoogleMap mMap;
     private LocationManager lm;
-    private LocationListener llistner;
     double lat, lng;
+    private EditText friendpos, poi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,15 +44,12 @@ public class SearchPOI extends FragmentActivity implements OnMapReadyCallback, L
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        friendpos = findViewById(R.id.friendLocation);
+        poi = findViewById(R.id.poi);
+
         lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE); //
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
             return;
         }
         Criteria criteria = new Criteria();
@@ -59,21 +63,25 @@ public class SearchPOI extends FragmentActivity implements OnMapReadyCallback, L
         }
     }
 
+    public void searchPoi(View view) throws IOException {
+        String friendpos = this.friendpos.getText().toString();
+        String poi = this.poi.getText().toString();
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
+        //gets the geo location of the address typed in by the user and generates the lat and lng from the first item in the list of possible geocodes
+        Geocoder coder = new Geocoder(SearchPOI.this);
+        List<Address> friend_addr = coder.getFromLocationName(friendpos, 3);
+        Address fgeo = friend_addr.get(0);
+        //create a marker for the friend
+        LatLng flatlng = new LatLng(fgeo.getLatitude(), fgeo.getLongitude());
+        mMap.addMarker(new MarkerOptions().position(flatlng).title("Friend"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(flatlng));
+    }
+
     @Override
-    public void onMapReady(GoogleMap googleMap) {
+    public void onMapReady(GoogleMap googleMap) { //displays the user on the map with a marker
         mMap = googleMap;
         LatLng userpos = new LatLng(lat, lng);
-        mMap.addMarker(new MarkerOptions().position(userpos).title("Your Location"));
+        mMap.addMarker(new MarkerOptions().position(userpos).title("You"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(userpos));
     }
 
