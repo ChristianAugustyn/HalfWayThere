@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "982499412820",
+    "firebase_url": "https://halfwaythere-46637.firebaseio.com",
+    "project_id": "halfwaythere-46637",
+    "storage_bucket": "halfwaythere-46637.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:982499412820:android:cc896533c25fa749bc16c1",
+        "android_client_info": {
+          "package_name": "com.example.christian_augustyn_aandroid_developer_halfwaythere"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "982499412820-pnm8ghcl5mhcumfurq7mvn77au4mei32.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAJnBLUzrA0Es9Okkqu-rSTQ0GnfRWGtSg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "982499412820-pnm8ghcl5mhcumfurq7mvn77au4mei32.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
