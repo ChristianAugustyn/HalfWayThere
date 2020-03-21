@@ -12,6 +12,7 @@ import android.location.Criteria;
 import android.location.Geocoder;
 import android.os.Bundle;
 
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -33,7 +34,7 @@ public class SearchPOI extends FragmentActivity implements OnMapReadyCallback, L
 
     private GoogleMap mMap;
     private LocationManager lm;
-    double lat, lng;
+    double userlat, userlng;
     private EditText friendpos, poi;
 
     @Override
@@ -75,20 +76,44 @@ public class SearchPOI extends FragmentActivity implements OnMapReadyCallback, L
         LatLng flatlng = new LatLng(fgeo.getLatitude(), fgeo.getLongitude());
         mMap.addMarker(new MarkerOptions().position(flatlng).title("Friend"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(flatlng));
+
+        double x = (fgeo.getLatitude() + userlat) / 2;
+        double y = (fgeo.getLongitude() + userlng) / 2;
+        //display the meetup location
+        LatLng point = new LatLng(x, y);
+        mMap.addMarker(new MarkerOptions().position(point).title("Meetup"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(point));
+
+        findNearbyPOI(poi, x, y);
+    }
+
+    public void findNearbyPOI(String poi, double lat, double lng) {
+        StringBuilder sb = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
+        sb.append("&location=" + lat + "," + lng);
+        sb.append("&radius=" + 1000);
+        sb.append("&keyword=" + poi);
+        sb.append("&key=" + getResources().getString(R.string.google_maps_key));
+        String url = sb.toString();
+        Object data[] = new Object[2];
+        data[0] = mMap;
+        data[1] = url;
+
+        PlacesPOI nearby = new PlacesPOI();
+        nearby.execute(data);
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) { //displays the user on the map with a marker
         mMap = googleMap;
-        LatLng userpos = new LatLng(lat, lng);
+        LatLng userpos = new LatLng(userlat, userlng);
         mMap.addMarker(new MarkerOptions().position(userpos).title("You"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(userpos));
     }
 
     @Override
     public void onLocationChanged(Location location) {
-        lng = location.getLongitude();
-        lat = location.getLatitude();
+        userlng = location.getLongitude();
+        userlat = location.getLatitude();
     }
 
     @Override
