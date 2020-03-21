@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -93,7 +94,7 @@ public class PlacesPOI extends AsyncTask<Object, String, String> {
 //                String vicinity = obj.getString("vicinity");
 
                 LatLng pos = new LatLng(Double.parseDouble(lat), Double.parseDouble(lng));
-                mMap.addMarker(new MarkerOptions().position(pos).title(name));
+                mMap.addMarker(new MarkerOptions().position(pos).title(name).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
             }
 
         } catch (JSONException e) {

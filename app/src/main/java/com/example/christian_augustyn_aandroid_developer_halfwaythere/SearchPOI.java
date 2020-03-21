@@ -17,6 +17,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -65,6 +66,8 @@ public class SearchPOI extends FragmentActivity implements OnMapReadyCallback, L
     }
 
     public void searchPoi(View view) throws IOException {
+        mMap.clear();
+        onMapReady(mMap);
         String friendpos = this.friendpos.getText().toString();
         String poi = this.poi.getText().toString();
 
@@ -74,14 +77,14 @@ public class SearchPOI extends FragmentActivity implements OnMapReadyCallback, L
         Address fgeo = friend_addr.get(0);
         //create a marker for the friend
         LatLng flatlng = new LatLng(fgeo.getLatitude(), fgeo.getLongitude());
-        mMap.addMarker(new MarkerOptions().position(flatlng).title("Friend"));
+        mMap.addMarker(new MarkerOptions().position(flatlng).title("Friend").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(flatlng));
 
         double x = (fgeo.getLatitude() + userlat) / 2;
         double y = (fgeo.getLongitude() + userlng) / 2;
         //display the meetup location
         LatLng point = new LatLng(x, y);
-        mMap.addMarker(new MarkerOptions().position(point).title("Meetup"));
+        mMap.addMarker(new MarkerOptions().position(point).title("Meetup").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(point));
 
         findNearbyPOI(poi, x, y);
