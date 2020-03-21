@@ -20,6 +20,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.auth.FirebaseAuth;
 
 import android.location.Location;
 import android.location.LocationListener;
@@ -84,7 +85,7 @@ public class SearchPOI extends FragmentActivity implements OnMapReadyCallback, L
         double y = (fgeo.getLongitude() + userlng) / 2;
         //display the meetup location
         LatLng point = new LatLng(x, y);
-        mMap.addMarker(new MarkerOptions().position(point).title("Meetup").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+        mMap.addMarker(new MarkerOptions().position(point).title("HalfWay").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(point));
 
         findNearbyPOI(poi, x, y);
@@ -103,6 +104,11 @@ public class SearchPOI extends FragmentActivity implements OnMapReadyCallback, L
 
         PlacesPOI nearby = new PlacesPOI();
         nearby.execute(data);
+    }
+
+    public void logout(View view) {
+        FirebaseAuth.getInstance().signOut();
+        startActivity(new Intent(SearchPOI.this, MainActivity.class));
     }
 
     @Override
