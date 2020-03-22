@@ -28,24 +28,7 @@ public class PlacesPOI extends AsyncTask<Object, String, String> {
     GoogleMap mMap;
     String url;
     String data;
-    /**
-     * Override this method to perform a computation on a background thread. The
-     * specified parameters are the parameters passed to {@link #execute}
-     * by the caller of this task.
-     * <p>
-     * This will normally run on a background thread. But to better
-     * support testing frameworks, it is recommended that this also tolerates
-     * direct execution on the foreground thread, as part of the {@link #execute} call.
-     * <p>
-     * This method can call {@link #publishProgress} to publish updates
-     * on the UI thread.
-     *
-     * @param objects The parameters of the task.
-     * @return A result, defined by the subclass of this task.
-     * @see #onPreExecute()
-     * @see #onPostExecute
-     * @see #publishProgress
-     */
+
     @Override
     protected String doInBackground(Object... objects) {
         mMap = (GoogleMap) objects[0];
@@ -91,10 +74,10 @@ public class PlacesPOI extends AsyncTask<Object, String, String> {
                 String lng = location.getString("lng");
 
                 String name = obj.getString("name");
-//                String vicinity = obj.getString("vicinity");
 
                 LatLng pos = new LatLng(Double.parseDouble(lat), Double.parseDouble(lng));
-                mMap.addMarker(new MarkerOptions().position(pos).title(name).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
+                mMap.addMarker(new MarkerOptions().position(pos).title(name)
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
             }
 
         } catch (JSONException e) {

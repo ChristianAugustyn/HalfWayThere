@@ -42,13 +42,6 @@ public class Signup extends AppCompatActivity {
         mRef = db.getReference();
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-    }
-
     public void createAccount(View view) {
         final String new_email = email.getText().toString();
         final String new_pass = pass.getText().toString();
@@ -73,7 +66,8 @@ public class Signup extends AppCompatActivity {
             pass.setError("Password must be greater than 7 characters");
             return;
         } else {
-            mAuth.createUserWithEmailAndPassword(new_email, new_pass).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+            mAuth.createUserWithEmailAndPassword(new_email, new_pass)
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {

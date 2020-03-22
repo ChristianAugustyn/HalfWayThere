@@ -52,7 +52,10 @@ public class SearchPOI extends FragmentActivity implements OnMapReadyCallback, L
         poi = findViewById(R.id.poi);
 
         lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE); //
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED && ActivityCompat
+                .checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
             return;
         }
         Criteria criteria = new Criteria();
@@ -60,7 +63,6 @@ public class SearchPOI extends FragmentActivity implements OnMapReadyCallback, L
         Location location = lm.getLastKnownLocation(lm.GPS_PROVIDER);
         if (location != null) {
             onLocationChanged(location);
-
         } else {
             lm.requestLocationUpdates(bestProvider, 2000, 0, SearchPOI.this);
         }
@@ -78,14 +80,16 @@ public class SearchPOI extends FragmentActivity implements OnMapReadyCallback, L
         Address fgeo = friend_addr.get(0);
         //create a marker for the friend
         LatLng flatlng = new LatLng(fgeo.getLatitude(), fgeo.getLongitude());
-        mMap.addMarker(new MarkerOptions().position(flatlng).title("Friend").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
+        mMap.addMarker(new MarkerOptions().position(flatlng).title("Friend")
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(flatlng));
 
         double x = (fgeo.getLatitude() + userlat) / 2;
         double y = (fgeo.getLongitude() + userlng) / 2;
         //display the meetup location
         LatLng point = new LatLng(x, y);
-        mMap.addMarker(new MarkerOptions().position(point).title("HalfWay").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+        mMap.addMarker(new MarkerOptions().position(point).title("HalfWay")
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(point));
 
         findNearbyPOI(poi, x, y);
